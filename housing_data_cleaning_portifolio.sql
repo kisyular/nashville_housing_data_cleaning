@@ -132,7 +132,8 @@ FROM NashvilleHousing;
 SELECT PARSENAME(REPLACE(OwnerAddress, ',', '.'), 3)  AS OwnerSplitAddress,
        PARSENAME(REPLACE(OwnerAddress, ', ', '.'), 2) AS OwnerSplitCity,
        PARSENAME(REPLACE(OwnerAddress, ', ', '.'), 1) AS OwnerSplitState
-FROM NashvilleHousing;
+FROM NashvilleHousing
+WHERE OwnerAddress IS NOT NULL;
 
 -- Lets add the columns to the table
 ALTER TABLE NashvilleHousing
@@ -152,7 +153,8 @@ SELECT TOP (10) UniqueID,
                 OwnerSplitCity,
                 OwnerSplitState,
                 OwnerSplitAddress
-FROM NashvilleHousing;
+FROM NashvilleHousing
+WHERE OwnerAddress IS NOT NULL;
 
 
 -- Change Y and N to Yes and No in "Sold as Vacant" field
@@ -221,7 +223,7 @@ WHERE UniqueID in (SELECT UniqueID FROM ConversionError);
 -- Lets see if the conversion is successful
 SELECT UniqueID, SalePrice
 FROM NashvilleHousing
-WHERE UniqueID in (SELECT UniqueID FROM ConversionError);
+WHERE UniqueID IN (SELECT UniqueID FROM ConversionError);
 
 -- Alter table and column SalePrice to Numeric
 ALTER TABLE NashvilleHousing
@@ -229,7 +231,8 @@ ALTER TABLE NashvilleHousing
 
 -- Check if the data is updated
 SELECT TOP (20) UniqueID, SalePrice
-FROM NashvilleHousing;
+FROM NashvilleHousing
+WHERE UniqueID IN (SELECT UniqueID FROM ConversionError);
 
 
 -- Remove Duplicates
@@ -275,7 +278,6 @@ FROM DuplicatesView;
 DELETE
 FROM NashvilleHousing
 WHERE UniqueID IN (SELECT UniqueID FROM DuplicatesView);
-
 
 
 -- Check if the data is updated
